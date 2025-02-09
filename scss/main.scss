@@ -7,10 +7,11 @@ html{
 }
 
 main{
-    margin-bottom: 250px;
+    margin-bottom: 0px;
 }
+
 footer.footer{
-    padding: 15px;
+    padding-top: 15px;
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -48,4 +49,55 @@ p{
         align-items: center;
         justify-content: center;
     }
+}
+
+
+
+.search-container {
+    align-content: center;
+    background-color: #A08D70; 
+    height: 155;
+    width: 1128;
+    padding-bottom: 50‒;
+    padding-bottom: 80px;
+     
+
+.col{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+
+.form-control{
+    background-color: #4A5554; 
+    color: white;
+    border: none;
+    padding: 10px;
+    height: 30px;
+    width: 250px;
+}
+
+.btn{
+    height: 58px;
+    width: 250px;
+}
+}
+
+.test{
+    padding-top: 30px;
+    padding-bottom: 15px;
+}
+
+.test2{
+    padding-top: 15px;
+    padding-bottom: 30px;
+}
+
+.cherch{
+    padding-top: 30px;
+    padding-bottom: 15px;
 }

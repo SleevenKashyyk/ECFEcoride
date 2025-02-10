@@ -10,22 +10,35 @@
     <form>
       <div class="mb-3">
         <label for="InputNom" class="form-label">Nom</label>
-        <input type="email" class="form-control" id="InputNom" placeholder="Votre nom" 
+        <input type="text" class="form-control" id="InputNom" placeholder="Votre nom" 
       </div>
       <div class="mb-3 pt-2">
         <label for="InputPrenom" class="form-label">Prénom</label>
-        <input type="email" class="form-control" id="InputPrenom" placeholder="Votre prénom" 
+        <input type="text" class="form-control" id="InputPrenom" placeholder="Votre prénom" 
+      </div>
+      <div class="mb-3">
+        <label for="InputEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="InputEmail" placeholder="votremail@email.fr" 
       </div>
       <div class="mb-3 pt-2">
         <label for="InputPassword" class="form-label">Mot de passe</label>
         <input type="password" class="form-control" id="InputPassword">
+        <div class="invalid-feedback">
+          Le mot de passe doit contenir au minnimum 8 caractères : avec au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère special 
+        </div>
+        <div class="valid-feedback">
+          Le mot de passe correspond aux critères
+        </div>
       </div>
       <div class="mb-3">
         <label for="ValidateInputPassword" class="form-label">Validez votre mot de passe</label>
         <input type="password" class="form-control" id="ValidateInputPassword">
+        <div class="invalid-feedback">
+          La validation n'est pas identique au mot de passe
+        </div>
       </div>
       <div class="text-center">
-        <button type="submit" class="btn btn-primary">Inscription</button>
+        <button type="submit" class="btn btn-primary" id="btn-valid-insc">Inscription</button>
       </div>
     </form>
       <div class="text-center pt-3">

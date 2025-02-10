@@ -12055,6 +12055,15 @@ p {
   padding-bottom: 15px;
 }
 
-.form-label {
+.form-control::-moz-placeholder {
   color: #42966E;
+}
+
+.form-control::placeholder {
+  color: #42966E;
+}
+
+.vehicleForm {
+  display: none;
+  margin-top: 20px;
 }/*# sourceMappingURL=main.css.map */

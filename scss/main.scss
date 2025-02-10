@@ -99,6 +99,11 @@ p{
     padding-bottom: 15px;
 }
 
-.form-label{
+.form-control::placeholder{
     color: $primary;
+}
+
+.vehicleForm {
+    display: none;
+    margin-top: 20px;
 }

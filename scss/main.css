@@ -11972,6 +11972,7 @@ html {
 }
 
 main {
+  background-color: #E4C9A0;
   margin-bottom: 0px;
 }
 
@@ -11989,6 +11990,7 @@ p {
 
 .hero-scene {
   position: relative;
+  margin-bottom: 15px;
 }
 .hero-scene::before {
   content: "";
@@ -12037,10 +12039,6 @@ p {
   height: 30px;
   width: 250px;
 }
-.search-container .btn {
-  height: 58px;
-  width: 250px;
-}
 
 .test {
   padding-top: 30px;
@@ -12055,4 +12053,8 @@ p {
 .cherch {
   padding-top: 30px;
   padding-bottom: 15px;
+}
+
+.form-label {
+  color: #42966E;
 }/*# sourceMappingURL=main.css.map */

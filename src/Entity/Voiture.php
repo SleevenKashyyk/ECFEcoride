@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VoitureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VoitureRepository::class)]
@@ -27,6 +29,20 @@ class Voiture
 
     #[ORM\Column(length: 50)]
     private ?string $date_premiere_immatriculation = null;
+
+    #[ORM\ManyToOne(inversedBy: 'voitures')]
+    private ?utilisateur $utilisateur = null;
+
+    /**
+     * @var Collection<int, Covoiturage>
+     */
+    #[ORM\OneToMany(targetEntity: Covoiturage::class, mappedBy: 'voiture')]
+    private Collection $covoiturages;
+
+    public function __construct()
+    {
+        $this->covoiturages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,6 +105,48 @@ class Voiture
     public function setDatePremiereImmatriculation(string $date_premiere_immatriculation): static
     {
         $this->date_premiere_immatriculation = $date_premiere_immatriculation;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?utilisateur $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Covoiturage>
+     */
+    public function getCovoiturages(): Collection
+    {
+        return $this->covoiturages;
+    }
+
+    public function addCovoiturage(Covoiturage $covoiturage): static
+    {
+        if (!$this->covoiturages->contains($covoiturage)) {
+            $this->covoiturages->add($covoiturage);
+            $covoiturage->setVoiture($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCovoiturage(Covoiturage $covoiturage): static
+    {
+        if ($this->covoiturages->removeElement($covoiturage)) {
+            // set the owning side to null (unless already changed)
+            if ($covoiturage->getVoiture() === $this) {
+                $covoiturage->setVoiture(null);
+            }
+        }
 
         return $this;
     }

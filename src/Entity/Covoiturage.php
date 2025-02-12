@@ -41,6 +41,12 @@ class Covoiturage
     #[ORM\Column]
     private ?float $prix_personne = null;
 
+    #[ORM\ManyToOne(inversedBy: 'covoiturages')]
+    private ?voiture $voiture = null;
+
+    #[ORM\ManyToOne(inversedBy: 'covoiturages')]
+    private ?utilisateur $utilisateur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -150,6 +156,30 @@ class Covoiturage
     public function setPrixPersonne(float $prix_personne): static
     {
         $this->prix_personne = $prix_personne;
+
+        return $this;
+    }
+
+    public function getVoiture(): ?voiture
+    {
+        return $this->voiture;
+    }
+
+    public function setVoiture(?voiture $voiture): static
+    {
+        $this->voiture = $voiture;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?utilisateur $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

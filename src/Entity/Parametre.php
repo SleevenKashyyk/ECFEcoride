@@ -19,6 +19,9 @@ class Parametre
     #[ORM\Column(length: 255)]
     private ?string $valeur = null;
 
+    #[ORM\ManyToOne(inversedBy: 'parametres')]
+    private ?configuration $configuration = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Parametre
     public function setValeur(string $valeur): static
     {
         $this->valeur = $valeur;
+
+        return $this;
+    }
+
+    public function getConfiguration(): ?configuration
+    {
+        return $this->configuration;
+    }
+
+    public function setConfiguration(?configuration $configuration): static
+    {
+        $this->configuration = $configuration;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ConfigurationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ConfigurationRepository::class)]
@@ -13,8 +15,64 @@ class Configuration
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?utilisateur $utilisateur = null;
+
+    /**
+     * @var Collection<int, Parametre>
+     */
+    #[ORM\OneToMany(targetEntity: Parametre::class, mappedBy: 'configuration')]
+    private Collection $parametres;
+
+    public function __construct()
+    {
+        $this->parametres = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUtilisateur(): ?utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?utilisateur $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Parametre>
+     */
+    public function getParametres(): Collection
+    {
+        return $this->parametres;
+    }
+
+    public function addParametre(Parametre $parametre): static
+    {
+        if (!$this->parametres->contains($parametre)) {
+            $this->parametres->add($parametre);
+            $parametre->setConfiguration($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParametre(Parametre $parametre): static
+    {
+        if ($this->parametres->removeElement($parametre)) {
+            // set the owning side to null (unless already changed)
+            if ($parametre->getConfiguration() === $this) {
+                $parametre->setConfiguration(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -16,6 +16,9 @@ class Marque
     #[ORM\Column(length: 50)]
     private ?string $libelle = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?voiture $voiture = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +32,18 @@ class Marque
     public function setLibelle(string $libelle): static
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    public function getVoiture(): ?voiture
+    {
+        return $this->voiture;
+    }
+
+    public function setVoiture(?voiture $voiture): static
+    {
+        $this->voiture = $voiture;
 
         return $this;
     }

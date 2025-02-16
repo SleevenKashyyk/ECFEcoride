@@ -4,69 +4,91 @@ namespace App\Controller;
 
 use App\Entity\Marque;
 use App\Repository\MarqueRepository;
-use DateTimeImmutable;
+use DateTimeImmutable ;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpParser\Node\Name;
+use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('api/marque', name: 'app_api_marque_')]
-final class MarqueController extends AbstractController
+#[Route('/api/marque', name: 'app_api_marque_')]
+class MarqueController extends AbstractController
 {
-
-public function __construct(private EntityManagerInterface $manager, private MarqueRepository $repository)
-{
+    public function __construct(
+    private EntityManagerInterface $manager,
+    private MarqueRepository $repository,
+    private SerializerInterface $serializer,
+    private UrlGeneratorInterface $urlGenerator,
+){
 }
 
-    #[Route(name: 'new', methods: 'POST')]
-    public function new(): Response
+    #[Route(methods: 'POST')]
+    public function new(Request $request): JsonResponse
     {
-        $marque = new Marque();
-        // Tell Doctrine you want to (eventually) save the marque (no queries yet)
+        $marque = $this->serializer->deserialize($request->getContent(), Marque::class, 'json');
+        $marque->setCreatedAt(new DateTimeImmutable());
+
         $this->manager->persist($marque);
-        // Actually executes the queries (i.e. the INSERT query)
         $this->manager->flush();
-        return $this->json(
-            ['message' => "Marque resource created with {$marque->getId()} id"],
-            Response::HTTP_CREATED,
+
+        $responseData = $this->serializer->serialize($marque, 'json');
+        $location = $this->urlGenerator->generate(
+            'app_api_marque_show',
+            ['id' => $marque->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL,
         );
-    } 
+
+        return new JsonResponse($responseData, Response::HTTP_CREATED, ["Location" => $location], true);
+
+}
 
     #[Route('/{id}', name: 'show', methods: 'GET')]
-    public function show(int $id): Response
+    public function show(int $id): JsonResponse
     {
         $marque = $this->repository->findOneBy(['id' => $id]);
         if (!$marque) {
-            throw $this->createNotFoundException("No Marque found for {$id} id");
+            $responseData = $this->serializer->serialize($marque, 'json');
+
+            return new JsonResponse($responseData, Response::HTTP_OK, [], true);
         }
-        return $this->json(
-            ['message' => "A Marque was found : {$marque->getNom()} for {$marque->getId()} id"]
-        );
+
+        return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        
     } 
 
     #[Route('/{id}', name: 'edit', methods: 'PUT')]
-    public function edit(int $id): Response
+    public function edit(int $id,Request $request): JsonResponse
     {
         $marque = $this->repository->findOneBy(['id' => $id]);
         if (!$marque) {
-            throw $this->createNotFoundException("No Marque found for {$id} id");
+            $marque = $this->serializer->deserialize(
+                $request->getContent(),
+                Marque::class,
+                'json',
+                [AbstractNormalizer::OBJECT_TO_POPULATE => $marque]
+            );
         }
         $this->manager->flush();
-        return $this->redirectToRoute('app_api_marque_show', ['id' => $marque->getId()]);
+        
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+
     }
 
     #[Route('/{id}', name: 'delete', methods: 'DELETE')]
-    public function delete(int $id): Response
+    public function delete(int $id): JsonResponse
     {
         $marque = $this->repository->findOneBy(['id' => $id]);
-        if (!$marque) {
-            throw $this->createNotFoundException("No Marque found for {$id} id");
+        if ($marque) {
+            $this->manager->remove($marque);
+            $this->manager->flush();
+
+            return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+
         }
-        $this->manager->remove($marque);
-        $this->manager->flush();
-        return $this->json(['message' => "Marque resource deleted"], Response::HTTP_NO_CONTENT);
+
+        return new JsonResponse(null, Response::HTTP_NOT_FOUND);
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CovoiturageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,7 +22,7 @@ class Covoiturage
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $heure_depart = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $lieu_depart = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -29,10 +31,10 @@ class Covoiturage
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $heure_arrivee = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $lieu_arrivee = null;
+    #[ORM\Column(length: 64)]
+    private ?string $lieu_arrive = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $statut = null;
 
     #[ORM\Column]
@@ -41,11 +43,19 @@ class Covoiturage
     #[ORM\Column]
     private ?float $prix_personne = null;
 
-    #[ORM\ManyToOne(inversedBy: 'covoiturages')]
-    private ?voiture $voiture = null;
+    /**
+     * @var Collection<int, voiture>
+     */
+    #[ORM\OneToMany(targetEntity: voiture::class, mappedBy: 'covoiturage')]
+    private Collection $voiture;
 
     #[ORM\ManyToOne(inversedBy: 'covoiturages')]
     private ?utilisateur $utilisateur = null;
+
+    public function __construct()
+    {
+        $this->voiture = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -112,14 +122,14 @@ class Covoiturage
         return $this;
     }
 
-    public function getLieuArrivee(): ?string
+    public function getLieuArrive(): ?string
     {
-        return $this->lieu_arrivee;
+        return $this->lieu_arrive;
     }
 
-    public function setLieuArrivee(string $lieu_arrivee): static
+    public function setLieuArrive(string $lieu_arrive): static
     {
-        $this->lieu_arrivee = $lieu_arrivee;
+        $this->lieu_arrive = $lieu_arrive;
 
         return $this;
     }
@@ -160,14 +170,32 @@ class Covoiturage
         return $this;
     }
 
-    public function getVoiture(): ?voiture
+    /**
+     * @return Collection<int, voiture>
+     */
+    public function getVoiture(): Collection
     {
         return $this->voiture;
     }
 
-    public function setVoiture(?voiture $voiture): static
+    public function addVoiture(voiture $voiture): static
     {
-        $this->voiture = $voiture;
+        if (!$this->voiture->contains($voiture)) {
+            $this->voiture->add($voiture);
+            $voiture->setCovoiturage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVoiture(voiture $voiture): static
+    {
+        if ($this->voiture->removeElement($voiture)) {
+            // set the owning side to null (unless already changed)
+            if ($voiture->getCovoiturage() === $this) {
+                $voiture->setCovoiturage(null);
+            }
+        }
 
         return $this;
     }

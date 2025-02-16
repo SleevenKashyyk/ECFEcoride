@@ -13,10 +13,10 @@ class Parametre
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 64)]
     private ?string $propriete = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 64)]
     private ?string $valeur = null;
 
     #[ORM\ManyToOne(inversedBy: 'parametres')]

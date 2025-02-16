@@ -16,44 +16,32 @@ class Utilisateur
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $prénom = null;
+    #[ORM\Column(length: 64)]
+    private ?string $prenom = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $password = null;
+    #[ORM\Column(length: 64)]
+    private ?string $mot_de_passe = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $téléphone = null;
+    #[ORM\Column(length: 64)]
+    private ?string $telephone = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 64)]
     private ?string $adresse = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $date_naissance = null;
 
     #[ORM\Column(type: Types::BLOB)]
     private $photo;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $pseudo = null;
-
-    /**
-     * @var Collection<int, Avis>
-     */
-    #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'utilisateur')]
-    private Collection $avis;
-
-    /**
-     * @var Collection<int, Role>
-     */
-    #[ORM\OneToMany(targetEntity: Role::class, mappedBy: 'utilisateur')]
-    private Collection $roles;
 
     /**
      * @var Collection<int, Voiture>
@@ -67,12 +55,31 @@ class Utilisateur
     #[ORM\OneToMany(targetEntity: Covoiturage::class, mappedBy: 'utilisateur')]
     private Collection $covoiturages;
 
+    /**
+     * @var Collection<int, Configuration>
+     */
+    #[ORM\OneToMany(targetEntity: Configuration::class, mappedBy: 'utilisateur')]
+    private Collection $configurations;
+
+    /**
+     * @var Collection<int, Avis>
+     */
+    #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'utilisateur')]
+    private Collection $avis;
+
+    /**
+     * @var Collection<int, Role>
+     */
+    #[ORM\OneToMany(targetEntity: Role::class, mappedBy: 'utilisateur')]
+    private Collection $roles;
+
     public function __construct()
     {
-        $this->avis = new ArrayCollection();
-        $this->roles = new ArrayCollection();
         $this->voitures = new ArrayCollection();
         $this->covoiturages = new ArrayCollection();
+        $this->configurations = new ArrayCollection();
+        $this->avis = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,14 +99,14 @@ class Utilisateur
         return $this;
     }
 
-    public function getPrénom(): ?string
+    public function getPrenom(): ?string
     {
-        return $this->prénom;
+        return $this->prenom;
     }
 
-    public function setPrénom(string $prénom): static
+    public function setPrenom(string $prenom): static
     {
-        $this->prénom = $prénom;
+        $this->prenom = $prenom;
 
         return $this;
     }
@@ -116,26 +123,26 @@ class Utilisateur
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getMotDePasse(): ?string
     {
-        return $this->password;
+        return $this->mot_de_passe;
     }
 
-    public function setPassword(string $password): static
+    public function setMotDePasse(string $mot_de_passe): static
     {
-        $this->password = $password;
+        $this->mot_de_passe = $mot_de_passe;
 
         return $this;
     }
 
-    public function getTéléphone(): ?string
+    public function getTelephone(): ?string
     {
-        return $this->téléphone;
+        return $this->telephone;
     }
 
-    public function setTéléphone(string $téléphone): static
+    public function setTelephone(string $telephone): static
     {
-        $this->téléphone = $téléphone;
+        $this->telephone = $telephone;
 
         return $this;
     }
@@ -184,66 +191,6 @@ class Utilisateur
     public function setPseudo(string $pseudo): static
     {
         $this->pseudo = $pseudo;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Avis>
-     */
-    public function getAvis(): Collection
-    {
-        return $this->avis;
-    }
-
-    public function addAvi(Avis $avi): static
-    {
-        if (!$this->avis->contains($avi)) {
-            $this->avis->add($avi);
-            $avi->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAvi(Avis $avi): static
-    {
-        if ($this->avis->removeElement($avi)) {
-            // set the owning side to null (unless already changed)
-            if ($avi->getUtilisateur() === $this) {
-                $avi->setUtilisateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Role>
-     */
-    public function getRoles(): Collection
-    {
-        return $this->roles;
-    }
-
-    public function addRole(Role $role): static
-    {
-        if (!$this->roles->contains($role)) {
-            $this->roles->add($role);
-            $role->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRole(Role $role): static
-    {
-        if ($this->roles->removeElement($role)) {
-            // set the owning side to null (unless already changed)
-            if ($role->getUtilisateur() === $this) {
-                $role->setUtilisateur(null);
-            }
-        }
 
         return $this;
     }
@@ -302,6 +249,96 @@ class Utilisateur
             // set the owning side to null (unless already changed)
             if ($covoiturage->getUtilisateur() === $this) {
                 $covoiturage->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Configuration>
+     */
+    public function getConfigurations(): Collection
+    {
+        return $this->configurations;
+    }
+
+    public function addConfiguration(Configuration $configuration): static
+    {
+        if (!$this->configurations->contains($configuration)) {
+            $this->configurations->add($configuration);
+            $configuration->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConfiguration(Configuration $configuration): static
+    {
+        if ($this->configurations->removeElement($configuration)) {
+            // set the owning side to null (unless already changed)
+            if ($configuration->getUtilisateur() === $this) {
+                $configuration->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Avis>
+     */
+    public function getAvis(): Collection
+    {
+        return $this->avis;
+    }
+
+    public function addAvi(Avis $avi): static
+    {
+        if (!$this->avis->contains($avi)) {
+            $this->avis->add($avi);
+            $avi->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvi(Avis $avi): static
+    {
+        if ($this->avis->removeElement($avi)) {
+            // set the owning side to null (unless already changed)
+            if ($avi->getUtilisateur() === $this) {
+                $avi->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Role>
+     */
+    public function getRoles(): Collection
+    {
+        return $this->roles;
+    }
+
+    public function addRole(Role $role): static
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles->add($role);
+            $role->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): static
+    {
+        if ($this->roles->removeElement($role)) {
+            // set the owning side to null (unless already changed)
+            if ($role->getUtilisateur() === $this) {
+                $role->setUtilisateur(null);
             }
         }
 

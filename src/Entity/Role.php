@@ -13,7 +13,7 @@ class Role
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $libelle = null;
 
     #[ORM\ManyToOne(inversedBy: 'roles')]

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\AvisRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
@@ -14,13 +13,16 @@ class Avis
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255)]
+    private ?string $commentair = null;
+
+    #[ORM\Column(length: 64)]
     private ?string $commentaire = null;
 
-    #[ORM\Column]
-    private ?int $note = null;
+    #[ORM\Column(length: 64)]
+    private ?string $note = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $statut = null;
 
     #[ORM\ManyToOne(inversedBy: 'avis')]
@@ -43,12 +45,12 @@ class Avis
         return $this;
     }
 
-    public function getNote(): ?int
+    public function getNote(): ?string
     {
         return $this->note;
     }
 
-    public function setNote(int $note): static
+    public function setNote(string $note): static
     {
         $this->note = $note;
 

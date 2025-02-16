@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\VoitureRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VoitureRepository::class)]
@@ -15,34 +13,29 @@ class Voiture
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $modele = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $immatriculation = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $energie = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $couleur = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 64)]
     private ?string $date_premiere_immatriculation = null;
+
+    #[ORM\ManyToOne(inversedBy: 'voiture')]
+    private ?Marque $marque = null;
 
     #[ORM\ManyToOne(inversedBy: 'voitures')]
     private ?utilisateur $utilisateur = null;
 
-    /**
-     * @var Collection<int, Covoiturage>
-     */
-    #[ORM\OneToMany(targetEntity: Covoiturage::class, mappedBy: 'voiture')]
-    private Collection $covoiturages;
-
-    public function __construct()
-    {
-        $this->covoiturages = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'voiture')]
+    private ?Covoiturage $covoiturage = null;
 
     public function getId(): ?int
     {
@@ -109,6 +102,18 @@ class Voiture
         return $this;
     }
 
+    public function getMarque(): ?Marque
+    {
+        return $this->marque;
+    }
+
+    public function setMarque(?Marque $marque): static
+    {
+        $this->marque = $marque;
+
+        return $this;
+    }
+
     public function getUtilisateur(): ?utilisateur
     {
         return $this->utilisateur;
@@ -121,32 +126,14 @@ class Voiture
         return $this;
     }
 
-    /**
-     * @return Collection<int, Covoiturage>
-     */
-    public function getCovoiturages(): Collection
+    public function getCovoiturage(): ?Covoiturage
     {
-        return $this->covoiturages;
+        return $this->covoiturage;
     }
 
-    public function addCovoiturage(Covoiturage $covoiturage): static
+    public function setCovoiturage(?Covoiturage $covoiturage): static
     {
-        if (!$this->covoiturages->contains($covoiturage)) {
-            $this->covoiturages->add($covoiturage);
-            $covoiturage->setVoiture($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCovoiturage(Covoiturage $covoiturage): static
-    {
-        if ($this->covoiturages->removeElement($covoiturage)) {
-            // set the owning side to null (unless already changed)
-            if ($covoiturage->getVoiture() === $this) {
-                $covoiturage->setVoiture(null);
-            }
-        }
+        $this->covoiturage = $covoiturage;
 
         return $this;
     }

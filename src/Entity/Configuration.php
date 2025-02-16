@@ -15,14 +15,14 @@ class Configuration
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?utilisateur $utilisateur = null;
-
     /**
      * @var Collection<int, Parametre>
      */
     #[ORM\OneToMany(targetEntity: Parametre::class, mappedBy: 'configuration')]
     private Collection $parametres;
+
+    #[ORM\ManyToOne(inversedBy: 'configurations')]
+    private ?utilisateur $utilisateur = null;
 
     public function __construct()
     {
@@ -32,18 +32,6 @@ class Configuration
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUtilisateur(): ?utilisateur
-    {
-        return $this->utilisateur;
-    }
-
-    public function setUtilisateur(?utilisateur $utilisateur): static
-    {
-        $this->utilisateur = $utilisateur;
-
-        return $this;
     }
 
     /**
@@ -72,6 +60,18 @@ class Configuration
                 $parametre->setConfiguration(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?utilisateur $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

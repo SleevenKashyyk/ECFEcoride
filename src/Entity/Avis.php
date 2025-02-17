@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\AvisRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: AvisRepository::class)]
+class Avis
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $commentair = null;
+
+    #[ORM\Column(length: 64)]
+    private ?string $commentaire = null;
+
+    #[ORM\Column(length: 64)]
+    private ?string $note = null;
+
+    #[ORM\Column(length: 64)]
+    private ?string $statut = null;
+
+    #[ORM\ManyToOne(inversedBy: 'avis')]
+    private ?utilisateur $utilisateur = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(string $commentaire): static
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(string $note): static
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): static
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?utilisateur $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+}

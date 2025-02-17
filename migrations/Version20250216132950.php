@@ -26,7 +26,7 @@ final class Version20250216132950 extends AbstractMigration
         $this->addSql('CREATE TABLE marque (id INT AUTO_INCREMENT NOT NULL, libelle VARCHAR(64) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE parametre (id INT AUTO_INCREMENT NOT NULL, propriete VARCHAR(64) NOT NULL, valeur VARCHAR(64) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE role (id INT AUTO_INCREMENT NOT NULL, libelle VARCHAR(64) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE utilisateur (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(64) NOT NULL, prenom VARCHAR(64) NOT NULL, email VARCHAR(64) NOT NULL, mot_de_passe VARCHAR(64) NOT NULL, telephone VARCHAR(64) NOT NULL, adresse VARCHAR(64) NOT NULL, date_naissance VARCHAR(64) NOT NULL, photo LONGBLOB NOT NULL, pseudo VARCHAR(64) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(64) NOT NULL, prenom VARCHAR(64) NOT NULL, email VARCHAR(64) NOT NULL, mot_de_passe VARCHAR(64) NOT NULL, telephone VARCHAR(64) NOT NULL, adresse VARCHAR(64) NOT NULL, date_naissance VARCHAR(64) NOT NULL, photo LONGBLOB NOT NULL, pseudo VARCHAR(64) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE voiture (id INT AUTO_INCREMENT NOT NULL, modele VARCHAR(64) NOT NULL, immatriculation VARCHAR(64) NOT NULL, energie VARCHAR(64) NOT NULL, couleur VARCHAR(64) NOT NULL, date_premiere_immatriculation VARCHAR(64) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
@@ -39,7 +39,7 @@ final class Version20250216132950 extends AbstractMigration
         $this->addSql('DROP TABLE marque');
         $this->addSql('DROP TABLE parametre');
         $this->addSql('DROP TABLE role');
-        $this->addSql('DROP TABLE utilisateur');
+        $this->addSql('DROP TABLE user');
         $this->addSql('DROP TABLE voiture');
     }
 }

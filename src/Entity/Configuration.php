@@ -22,7 +22,7 @@ class Configuration
     private Collection $parametres;
 
     #[ORM\ManyToOne(inversedBy: 'configurations')]
-    private ?utilisateur $utilisateur = null;
+    private ?user $user = null;
 
     public function __construct()
     {
@@ -64,14 +64,14 @@ class Configuration
         return $this;
     }
 
-    public function getUtilisateur(): ?utilisateur
+    public function getUser(): ?user
     {
-        return $this->utilisateur;
+        return $this->user;
     }
 
-    public function setUtilisateur(?utilisateur $utilisateur): static
+    public function setUser(?user $user): static
     {
-        $this->utilisateur = $utilisateur;
+        $this->user = $user;
 
         return $this;
     }

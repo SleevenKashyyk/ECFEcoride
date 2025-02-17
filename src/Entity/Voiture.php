@@ -32,7 +32,7 @@ class Voiture
     private ?Marque $marque = null;
 
     #[ORM\ManyToOne(inversedBy: 'voitures')]
-    private ?utilisateur $utilisateur = null;
+    private ?user $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'voiture')]
     private ?Covoiturage $covoiturage = null;
@@ -114,14 +114,14 @@ class Voiture
         return $this;
     }
 
-    public function getUtilisateur(): ?utilisateur
+    public function getUser(): ?user
     {
-        return $this->utilisateur;
+        return $this->user;
     }
 
-    public function setUtilisateur(?utilisateur $utilisateur): static
+    public function setUser(?user $user): static
     {
-        $this->utilisateur = $utilisateur;
+        $this->user = $user;
 
         return $this;
     }

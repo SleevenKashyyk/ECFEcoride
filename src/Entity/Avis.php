@@ -20,7 +20,7 @@ class Avis
     private ?string $commentaire = null;
 
     #[ORM\Column(length: 64)]
-    private ?string $note = null;
+    private ?int $note = null;
 
     #[ORM\Column(length: 64)]
     private ?string $statut = null;

@@ -65,7 +65,6 @@ class AvisController extends AbstractController
     public function new(Request $request): JsonResponse
     {
         $avis = $this->serializer->deserialize($request->getContent(), Avis::class, 'json');
-        $avis->setCreatedAt(new DateTimeImmutable());
 
         $this->manager->persist($avis);
         $this->manager->flush();

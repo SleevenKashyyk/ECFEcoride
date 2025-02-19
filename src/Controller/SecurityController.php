@@ -3,22 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{JsonResponse, Request, Response};
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Attribute\Model;
+use Nelmio\ApiDocBundle\Attribute\Security;
 use OpenApi\Attributes as OA;
-use OpenApi\Attributes\RequestBody;
-use OpenApi\Attributes\Property;
-use OpenApi\Attributes\JsonContent;
-use OpenApi\Attributes\MediaType;
-use OpenApi\Attributes\Schema;
+
 
 
 #[Route('/api', name: 'app_api_')]
@@ -29,53 +26,41 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/registration', name: 'registration', methods: 'POST')]
+ 
+#[OA\Post(
+    path: "/api/registration",
+    summary: "Inscription d'un nouvel utilisateur",
+    requestBody: new OA\RequestBody(
+        required: true,
+        description: "Données de l'utilisateur à inscrire",
+        content: new OA\JsonContent(
+            type: "object",
+            properties: [
+                new OA\Property(property: "email", type: "string", example: "adresse@email.com"),
+                new OA\Property(property: "password", type: "string", example: "Mot de passe")
+            ]
+        )
+    ),
+    responses: [
+        new OA\Response(
+            response: Response::HTTP_CREATED,  // Use the constant for 201
+            description: "Utilisateur inscrit avec succès",
+            content: new OA\JsonContent(
+                type: "object",
+                properties: [
+                    new OA\Property(property: "user", type: "string", example: "Nom d'utilisateur"),
+                    new OA\Property(property: "apiToken", type: "string", example: "31a023e212f116124a36af14ea0c1c3806eb9378"),
+                    new OA\Property(
+                        property: "roles",
+                        type: "array",
+                        items: new OA\Items(type: "string", example: "ROLE_USER")
+                    )
+                ]
+            )
+        )
+    ]
+)]
 
-    /**  #[OA\Post(
-    *        summary: "Inscription d'un nouvel utilisateur",
-    *        requestBody: new OA\RequestBody(
-    *            required: true,
-    *            description: "Données de l'utilisateur à inscrire",
-    *            content: new OA\JsonContent(
-    *                type: "object",
-    *                properties: [
-    *                    new OA\Property(property: "email", type: "string", example: "adresse@email.com"),
-    *                    new OA\Property(property: "password", type: "string", example: "Mot de passe")
-    *                ]
-    *            )
-    *        ),
-    *        responses: [
-    *            new OA\Response(
-    *                response: 201,
-    *                description: "Utilisateur inscrit avec succès",
-    *                content: new OA\JsonContent(
-    *                    type: "object",
-    *                    properties: [
-    *                        new OA\Property(property: "user", type: "string", example: "Nom d'utilisateur"),
-    *                        new OA\Property(property: "apiToken", type: "string", example: "31a023e212f116124a36af14ea0c1c3806eb9378"),
-    *                        new OA\Property(property: "roles", type: "array", items: new OA\Items(type: "string", example: "ROLE_USER"))
-    *                    ]
-    *                )
-    *            ),
-    *            new OA\Response(
-    *                response: 400,
-    *                description: "Requête invalide (données incorrectes)"
-    *            ),
-    *            new OA\Response(
-    *                response: 409,
-    *                description: "Email déjà utilisé"
-    *            )
-    *        ]
-    *    )]
-    *    public function register(Request $request): JsonResponse
-    *    {
-    *        return new JsonResponse([
-    *            'user' => 'Nom d\'utilisateur',
-    *            'apiToken' => '31a023e212f116124a36af14ea0c1c3806eb9378',
-    *            'roles' => ['ROLE_USER']
-    *        ], 201);
-    *    }
-    *}
-    */
 
         public function register(Request $request, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
@@ -92,6 +77,41 @@ class SecurityController extends AbstractController
     }
 
 #[Route('/login', name: 'login', methods: 'POST')]
+
+#[OA\Post(
+    path: "/api/login",
+    summary: "Connecter un utilisateur",
+    requestBody: new OA\RequestBody(
+        required: true,
+        description: "Données de l'utilisateur à inscrire",
+        content: new OA\JsonContent(
+            type: "object",
+            properties: [
+                new OA\Property(property: "username", type: "string", example: "adresse@email.com"),
+                new OA\Property(property: "password", type: "string", example: "Mot de passe")
+            ]
+        )
+    ),
+    responses: [
+        new OA\Response(
+            response: Response::HTTP_ACCEPTED,  // Use the constant for 301
+            description: "Utilisateur connecter avec succès",
+            content: new OA\JsonContent(
+                type: "object",
+                properties: [
+                    new OA\Property(property: "user", type: "string", example: "Nom d'utilisateur"),
+                    new OA\Property(property: "apiToken", type: "string", example: "31a023e212f116124a36af14ea0c1c3806eb9378"),
+                    new OA\Property(
+                        property: "roles",
+                        type: "array",
+                        items: new OA\Items(type: "string", example: "ROLE_USER")
+                    )
+                ]
+            )
+        )
+    ]
+)]
+
 public function login(#[CurrentUser()] ?User $user): JsonResponse
 {
         if (null === $user) {

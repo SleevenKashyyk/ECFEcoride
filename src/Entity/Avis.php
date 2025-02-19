@@ -45,12 +45,12 @@ class Avis
         return $this;
     }
 
-    public function getNote(): ?string
+    public function getNote(): ?int
     {
         return $this->note;
     }
 
-    public function setNote(string $note): static
+    public function setNote(int $note): static
     {
         $this->note = $note;
 

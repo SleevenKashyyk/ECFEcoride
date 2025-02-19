@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use OpenApi\Attributes as OA;
 
 #[Route('/api/avis', name: 'app_api_avis_')]
 class AvisController extends AbstractController
@@ -26,6 +27,41 @@ class AvisController extends AbstractController
 }
 
     #[Route(methods: 'POST')]
+
+    #[OA\Post(
+        path: "/api/avis",
+        summary: "Avis sur un utilisateur",
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: "Commentaire sur l'utilisateur à complèter",
+            content: new OA\JsonContent(
+                type: "object",
+                properties: [
+                    new OA\Property(property: "commentaire", type: "string", example: "Trés bon chauffeur"),
+                    new OA\Property(property: "note", type: "integer", example: "4")
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: Response::HTTP_CREATED,  // Use the constant for 201
+                description: "Avis rempli avec succès",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "note", type: "integer", example: "1"),
+                        new OA\Property(property: "name", type: "string", example: "nom de l'utilisateur"),
+                        new OA\Property(property: "commentaire",type: "string",example: "Super Chauffeur"),
+                        ]
+                    )
+                )
+            ]
+        )
+    ]
+
+                                
+
+
     public function new(Request $request): JsonResponse
     {
         $avis = $this->serializer->deserialize($request->getContent(), Avis::class, 'json');

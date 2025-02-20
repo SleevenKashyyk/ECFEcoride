@@ -1,110 +1,80 @@
-Documentation Technique de l'Application EcoRide
-
 # Ecoride 
 Voici un site a vocation de co-voiturage écologique pour le client José 
 
-Documentation Technique de l'Application EcoRide
-
-1. Réflexions Initiales Technologiques
-
-EcoRide est une application visant à faciliter le covoiturage en mettant en relation des conducteurs et des passagers. Le choix technologique s'est porté sur :
-
-Backend : Symfony (PHP)
-
-Base de données : MySQL
-
-Frontend : HTML 5, CSS (Bootstrap), JS
-
-API : RESTful
-
-Déploiement : Docker & AWS
-
-2. Configuration de l’Environnement de Travail
-
-Prérequis
-
-PHP 8.x
-
-Composer
-
-Symfony CLI
-
-Node.js & npm
-
-MySQL 8.x
-
-Docker & Docker Compose
-
-Installation du Projet
-
 # Installation
 
-3. Modèle Conceptuel de Données
+## Prérequis
+Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
-Le modèle conceptuel est basé sur les entités suivantes :
+- **PHP 8+**
+- **Composer**
+- **Symfony CLI**
+- **MySQL**
+- **Node.js + npm** (pour le frontend, si applicable)
+- **Bootstrap** (inclus via npm ou CDN)
+- **Git**
 
-Utilisateur : informations personnelles
+## Installation et Configuration
 
-Voiture : modèle, immatriculation, énergie
+### 1️⃣ Cloner le dépôt Git
+```bash
+git clone https://github.com/SleevenKashyyk/ECFEcoride.git
+cd EcoRide
+```
 
-Covoiturage : trajets proposés
+### 2️⃣ Installer les dépendances backend
+```bash
+composer install
+```
 
-Avis : notes et commentaires
+### 3️⃣ Configurer l'environnement
+Copiez le fichier `.env.example` et renommez-le en `.env`, puis configurez votre base de données MySQL :
+```dotenv
+DATABASE_URL="mysql://user:password@127.0.0.1:3306/ecoride_db"
+```
 
-Marque : marque des voitures
+### 4️⃣ Créer et peupler la base de données
+```bash
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
+```
 
-(Voir diagramme de classe ci-joint.)
+### 5️⃣ Lancer le serveur Symfony
+```bash
+symfony server:start
+```
 
-4. Diagramme d’Utilisation
+### 6️⃣ Installer et configurer le frontend avec Bootstrap
+Si Bootstrap est utilisé via npm, installez-le :
+```bash
+cd frontend
+npm install bootstrap
+npm install
+npm run dev
+```
+Sinon, utilisez le CDN Bootstrap directement dans vos fichiers HTML.
 
-Le diagramme des cas d’utilisation présente les interactions des utilisateurs avec le système :
+## Accéder à l'application
+- Backend : `http://127.0.0.1:8000`
+- Frontend : `http://localhost:3000` (selon la config du framework JS utilisé)
+- Documentation API : `http://127.0.0.1:8000/api/doc` (via Nelmio)
 
-Inscription / Connexion
+## Utilisation de l'API
+L'API est accessible via `http://127.0.0.1:8000/api/doc`, générée avec **Nelmio API Doc**. Elle permet d'effectuer les opérations **CRUD** sur les entités principales de l'application.
 
-Ajout d’un véhicule
+### Authentification avec Token
+- L'accès aux routes protégées nécessite un **token**.
+- Le token doit être inclus dans l'en-tête `Authorization`.
+- La session garde le token actif pour l’ensemble des requêtes tant que l’utilisateur est connecté.
 
-Proposition d’un covoiturage
+## Dépannage
+Si vous rencontrez des problèmes :
+- Vérifiez que MySQL est bien démarré
+- Vérifiez les logs (`var/log/` pour Symfony)
+- Vérifiez votre fichier `.env`
+- Lancez `composer dump-autoload`
 
-Recherche et réservation d’un trajet
+## Licence
+Ce projet est sous licence MIT. Voir `LICENSE` pour plus de détails.
 
-(Voir diagramme UML des cas d’utilisation.)
-
-5. Diagramme de Séquence
-
-Illustration des interactions principales entre les utilisateurs et le système, notamment :
-
-Processus de réservation
-
-Création d’un trajet
-
-Validation des paiements
-
-(Voir diagramme de séquence.)
-
-6. Documentation du Déploiement
-
-Étapes de déploiement
-
-Préparation du serveur
-
-Installer Docker et Docker Compose
-
-Configurer la base de données MySQL
-
-Déploiement de l’application
-
-Builder et exécuter les conteneurs Docker
-
-Exécuter les migrations de base de données
-
-Configuration Nginx / Apache
-
-Redirection des requêtes vers Symfony
-
-Monitoring & Logs
-
-Utilisation de PM2 pour superviser les processus
-
-Intégration avec Sentry pour la gestion des erreurs
-
-# Commmande

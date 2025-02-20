@@ -65,7 +65,7 @@ L'API est accessible via `http://127.0.0.1:8000/api/doc`, générée avec **Nelm
 
 ### Authentification avec Token
 - L'accès aux routes protégées nécessite un **token**.
-- Le token doit être inclus dans l'en-tête `Authorization` sous la forme `Bearer <votre_token>`.
+- Le token doit être inclus dans l'en-tête `Authorization`.
 - La session garde le token actif pour l’ensemble des requêtes tant que l’utilisateur est connecté.
 
 ## Dépannage

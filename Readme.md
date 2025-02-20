@@ -3,7 +3,7 @@ Voici un site a vocation de co-voiturage écologique pour le client José
 
 # Installation
 
-## 📌 Prérequis
+## Prérequis
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 - **PHP 8+**
@@ -14,7 +14,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 - **Bootstrap** (inclus via npm ou CDN)
 - **Git**
 
-## 🚀 Installation et Configuration
+## Installation et Configuration
 
 ### 1️⃣ Cloner le dépôt Git
 ```bash
@@ -55,26 +55,26 @@ npm run dev
 ```
 Sinon, utilisez le CDN Bootstrap directement dans vos fichiers HTML.
 
-## ✅ Accéder à l'application
+## Accéder à l'application
 - Backend : `http://127.0.0.1:8000`
 - Frontend : `http://localhost:3000` (selon la config du framework JS utilisé)
 - Documentation API : `http://127.0.0.1:8000/api/doc` (via Nelmio)
 
-## 🔗 Utilisation de l'API
+## Utilisation de l'API
 L'API est accessible via `http://127.0.0.1:8000/api/doc`, générée avec **Nelmio API Doc**. Elle permet d'effectuer les opérations **CRUD** sur les entités principales de l'application.
 
-### 🔑 Authentification avec Token
+### Authentification avec Token
 - L'accès aux routes protégées nécessite un **token**.
 - Le token doit être inclus dans l'en-tête `Authorization` sous la forme `Bearer <votre_token>`.
 - La session garde le token actif pour l’ensemble des requêtes tant que l’utilisateur est connecté.
 
-## 🛠 Dépannage
+## Dépannage
 Si vous rencontrez des problèmes :
 - Vérifiez que MySQL est bien démarré
 - Vérifiez les logs (`var/log/` pour Symfony)
 - Vérifiez votre fichier `.env`
 - Lancez `composer dump-autoload`
 
-## 📜 Licence
+## Licence
 Ce projet est sous licence MIT. Voir `LICENSE` pour plus de détails.
 

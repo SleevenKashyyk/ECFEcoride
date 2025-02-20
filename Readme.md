@@ -1,11 +1,19 @@
-# Ecoride 
-Voici un site a vocation de co-voiturage écologique pour le client José 
+### 🔹 Objectif du projet
+EcoRide est une plateforme de covoiturage écologique visant à optimiser les trajets et réduire l’empreinte carbone en facilitant le partage de véhicules.
 
-# Installation
+### 🔹 Technologies choisies
+Pour assurer performance, scalabilité et maintenabilité, voici les éléments mis en place:
+- **Backend** : Symfony (PHP 8+) pour sa robustesse et son intégration facile avec Doctrine.
+- **Base de données** : MySQL pour stocker les utilisateurs, trajets et transactions.
+- **Frontend** : Bootstrap pour un design responsive et fluide.
+- **Gestion des API** : Nelmio pour documenter et faciliter l'accès aux endpoints REST.
+- **Sécurité** : Utilisation de tokens pour l'authentification des utilisateurs via JWT.
+- **Contrôle de version** : GitHub pour la gestion du code source.
 
-## Prérequis
+## 2️⃣ Configuration de l'Environnement de Travail
+
+### 📌 Prérequis
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
-
 - **PHP 8+**
 - **Composer**
 - **Symfony CLI**
@@ -30,7 +38,7 @@ composer install
 ### 3️⃣ Configurer l'environnement
 Copiez le fichier `.env.example` et renommez-le en `.env`, puis configurez votre base de données MySQL :
 ```dotenv
-DATABASE_URL="mysql://user:password@127.0.0.1:3306/ecoride_db"
+DATABASE_URL="mysql://sleeven:SevenKashyyk2025@127.0.0.1:3306/Ecoride"
 ```
 
 ### 4️⃣ Créer et peupler la base de données
@@ -75,6 +83,5 @@ Si vous rencontrez des problèmes :
 - Vérifiez votre fichier `.env`
 - Lancez `composer dump-autoload`
 
-## Licence
-Ce projet est sous licence MIT. Voir `LICENSE` pour plus de détails.
+
 
